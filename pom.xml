@@ -98,7 +98,7 @@
 	    <repository>
 	      <id>nexus</id>
 	      <name>Mithun Technologies Releases Nexus Repository</name>
-	      <url></url>
+	      <url>http://13.60.48.188:9989/roshini/repository/webApp-Release/</url>
 	    </repository>
 	    
 	    <snapshotRepository>
