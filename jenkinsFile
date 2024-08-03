@@ -1,0 +1,23 @@
+node {
+    
+    def mvnHome = '/var/lib/jenkins/tools/hudson.tasks.Maven_MavenInstallation/maven_3.9.8'
+    
+    stage('checkoutCode') { 
+        git branch: 'development', credentialsId: 'ad8b8a87-5bea-4b00-896e-534627121719', url: 'https://github.com/RSoftware-solutions/maven-web-application.git'
+        
+    }
+    stage('Build'){
+        sh "$mvnHome/bin/mvn clean package"
+    }
+    //stage('sonarQubeReport'){
+    //  sh "$mvnHome/bin/mvn sonar:sonar"
+    //} 
+    stage('DeployToNexusRepo'){
+        sh "$mvnHome/bin/mvn deploy"
+    }
+    stage('DeployToTomcat'){
+        sshagent(['e116ce88-0bce-4da4-b83c-ea6876e956f9']) {
+            sh "scp -o StrictHostKeyChecking=no target/maven-web-application.war ec2-user@16.170.230.133:/opt/apache-tomcat-9.0.91/webapps"
+        }
+    }
+}
